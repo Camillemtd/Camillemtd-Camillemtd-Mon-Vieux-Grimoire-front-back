@@ -5,6 +5,6 @@
 
 ### Avec npm
 
-Faites la commande `npm install` pour installer les dépendances puis `npm start` pour lancer le projet. 
+Faites la commande `npm install` pour installer les dépendances puis `nodemon server` pour lancer le projet. 
 
 Le projet a été testé sur node 19. 
