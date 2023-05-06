@@ -5,7 +5,9 @@ const bookRoutes = require('./routes/books.js')
 const userRoutes = require('./routes/user.js')
 const path = require('path');
 const app = express()
-const mongoDB = require('./_utils/mp')
+const dotenv = require('dotenv')
+dotenv.config();
+const mongoDB = process.env.MONGODB_MP 
 
 mongoose.connect(`mongodb+srv://${mongoDB}@cluster0.bj69l2o.mongodb.net/?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
