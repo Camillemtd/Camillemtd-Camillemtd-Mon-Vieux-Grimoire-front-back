@@ -6,8 +6,12 @@ const userRoutes = require('./routes/user.js')
 const path = require('path');
 const app = express()
 const dotenv = require('dotenv')
+const helmet = require('helmet')
+const rateLimit = require('express-rate-limit')
 dotenv.config();
 const mongoDB = process.env.MONGODB_MP 
+
+
 
 mongoose.connect(`mongodb+srv://${mongoDB}@cluster0.bj69l2o.mongodb.net/?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
@@ -15,7 +19,9 @@ mongoose.connect(`mongodb+srv://${mongoDB}@cluster0.bj69l2o.mongodb.net/?retryWr
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-  app.use(express.json())
+app.use(express.json())
+app.use(helmet())
+
   
 
 app.use((req, res, next) => {
@@ -25,11 +31,13 @@ app.use((req, res, next) => {
     next();
   });
 
-// Gestion des erreurs
-
+const authLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 50,
+});
 
 app.use('/api/books', bookRoutes)
-app.use('/api/auth', userRoutes)
+app.use('/api/auth',authLimiter, userRoutes)
 app.use('/images', express.static(path.join(__dirname,'images')))
 
 
