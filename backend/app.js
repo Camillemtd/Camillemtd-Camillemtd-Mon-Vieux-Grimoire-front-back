@@ -11,7 +11,9 @@ const rateLimit = require('express-rate-limit')
 dotenv.config();
 const mongoDB = process.env.MONGODB_MP 
 
-
+app.use(helmet({
+  crossOriginResourcePolicy: false
+}))
 
 mongoose.connect(`mongodb+srv://${mongoDB}@cluster0.bj69l2o.mongodb.net/?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
@@ -20,7 +22,7 @@ mongoose.connect(`mongodb+srv://${mongoDB}@cluster0.bj69l2o.mongodb.net/?retryWr
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.use(express.json())
-app.use(helmet())
+
 
   
 
@@ -30,6 +32,8 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
   });
+
+
 
 const authLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
