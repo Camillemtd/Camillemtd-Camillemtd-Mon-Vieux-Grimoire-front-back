@@ -11,6 +11,7 @@ module.exports= (req,res, next) => {
         req.auth = {
             userId: userId
         }
+        console.log(req.headers.authorization)
         console.log(req.auth.userId)
         next()
     } catch(error){
